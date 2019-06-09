@@ -12,7 +12,6 @@ class TestApplication(XAE):
 
         self.orch_path = 'onem2m/EDSOrch/edsorch/'
         self.sensor_temp_path = 'onem2m/TemperatureSensor/'
-        self.sensor1_temp_path = 'onem2m/TemperatureSensor1/'
 
         self.actuator_simple_path = 'onem2m/SimpleActuator/'
 
@@ -31,10 +30,6 @@ class TestApplication(XAE):
 
         # subscribe to temperature sensor response
         response_path = self.sensor_temp_path + 'response'
-        self.add_container_subscription(response_path, self.handle_temp_response)
-
-        # subscribe to temperature sensor1 response
-        response_path = self.sensor1_temp_path + 'response'
         self.add_container_subscription(response_path, self.handle_temp_response)
 
         # subscribe to the simple actuator response
@@ -116,7 +111,7 @@ class TestApplication(XAE):
         self.requests.append(request_ID)
         request = [{'modify':{'app_ID':self.app_ID, 'request_ID':
             request_ID, 'name' : sensor_name, 'conf':{'onoff':'ON', 'period':5}}}]
-        request_path = self.sensor1_temp_path + 'request'
+        request_path = self.sensor_temp_path + 'request'
         self.push_content(request_path, request)
 
         request_ID = (uuid.uuid4().hex)[:12]

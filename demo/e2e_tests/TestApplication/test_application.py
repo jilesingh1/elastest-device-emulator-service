@@ -28,6 +28,7 @@ class TestApplication(XAE):
 
         self.orch_path = 'onem2m/EDSOrch/edsorch/'
         self.sensor_temp_path = 'onem2m/TemperatureSensor/'
+        self.sensor1_temp_path = 'onem2m/TemperatureSensor1/'
         self.actuator_simple_path = 'onem2m/SimpleActuator/'
 
         self.requests_ID = {}
@@ -45,6 +46,10 @@ class TestApplication(XAE):
 
         # subscribe to temperature sensor response
         response_path = self.sensor_temp_path + 'response'
+        self.add_container_subscription(response_path, self.handle_temp_response)
+
+        # subscribe to temperature sensor response
+        response_path = self.sensor1_temp_path + 'response'
         self.add_container_subscription(response_path, self.handle_temp_response)
 
         # subscribe to the simple actuator response
@@ -87,6 +92,16 @@ class TestApplication(XAE):
         self.push_content(request_path, request)
         self.requests.append(request_ID)
         self.logger.info('sent request to register sensor')
+        gevent.sleep(3)
+
+        # register the sensor - 1.1
+        request_ID = (uuid.uuid4().hex)[:12]
+        request_ID = str('sensor1_temp_' + request_ID)
+        request = [{'register':{'sensor':{'app_ID':self.app_ID,
+            'request_ID':request_ID, 'sensor_type':'temperature'}}}]
+        self.push_content(request_path, request)
+        self.requests.append(request_ID)
+        self.logger.info('sent request to register sensor1')
         gevent.sleep(3)
 
         # register the actuator - 2

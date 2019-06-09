@@ -91,7 +91,7 @@ class TestApplication(XAE):
             'request_ID':request_ID, 'sensor_type':'temperature'}}}]
         self.push_content(request_path, request)
         self.requests.append(request_ID)
-        self.logger.info('sent request to register sensor')
+        self.logger.info('sent request to register sensor blah blah')
         gevent.sleep(3)
 
         # register the sensor - 1.1

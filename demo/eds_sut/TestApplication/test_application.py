@@ -103,7 +103,7 @@ class TestApplication(XAE):
 
         request_ID = (uuid.uuid4().hex)[:12]
         request_ID = str('modify_' + request_ID)
-        actuator_name = self.requests_ID[self.requests[num_of_sensors+1]]['conf']['name']
+        actuator_name = self.requests_ID[self.requests[self.num_of_sensors+1]]['conf']['name']
         self.requests.append(request_ID)
         request = [{'modify':{'app_ID':self.app_ID, 'request_ID':
             request_ID, 'name' : actuator_name, 'conf':{'delay':3}}}]

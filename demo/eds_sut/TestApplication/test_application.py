@@ -158,6 +158,7 @@ class TestApplication(XAE):
         if float(con) > 30:
             self.push_content(self.requests_ID[actuator_request]['conf']['in_path'],
                     con)
+            print str(con)
 
     def handle_orch_response(self, cnt, con):
         reply = con

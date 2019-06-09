@@ -155,10 +155,11 @@ class TestApplication(XAE):
         actuator_request = self.requests[3]
         self.logger.info(':sensor:'+ con)
         self.logger.info(cnt)
+        self.logger.info(str(con))
         if float(con) > 30:
             self.push_content(self.requests_ID[actuator_request]['conf']['in_path'],
                     con)
-            self.logger.info(str(con))
+
 
     def handle_orch_response(self, cnt, con):
         reply = con

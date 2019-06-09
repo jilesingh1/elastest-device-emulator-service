@@ -21,6 +21,7 @@ class TestApplication(XAE):
         self.app_ID = "testapplication"
         self.requests = []
         self.setup = False
+        self.num_of_sensors = 4
 
     def _on_register(self):
 
@@ -56,6 +57,9 @@ class TestApplication(XAE):
         request_ID = (uuid.uuid4().hex)[:12]
         # append the request to requests
         request_ID = str('app_' + request_ID)
+        # sensor base name
+        sensor_name = "sensor_temp_"
+
         request = [{'register':{'application':{'app_ID':self.app_ID,
             'request_ID':request_ID}}}]
         request_path = self.orch_path + 'request'
@@ -64,25 +68,17 @@ class TestApplication(XAE):
         self.logger.info('sent request to register application')
         gevent.sleep(3)
 
-        # register the sensor - 1
-        request_ID = (uuid.uuid4().hex)[:12]
-        request_ID = str('sensor_temp_' + request_ID)
-        request = [{'register':{'sensor':{'app_ID':self.app_ID,
-            'request_ID':request_ID, 'sensor_type':'temperature'}}}]
-        self.push_content(request_path, request)
-        self.requests.append(request_ID)
-        self.logger.info('sent request to register sensor')
-        gevent.sleep(3)
+        # register the sensors involed
+        for sensor_count in range(1, self.num_of_sensors+1):
+            request_ID = (uuid.uuid4().hex)[:12]
+            request_ID = str('sensor_temp_' + sensor_count + request_ID)
+            request = [{'register':{'sensor':{'app_ID':self.app_ID,
+                'request_ID':request_ID, 'sensor_type':'temperature'}}}]
+            self.push_content(request_path, request)
+            self.requests.append(request_ID)
+            self.logger.info('sent request to register sensor')
+            gevent.sleep(3)
 
-        # register the sensor - 1.1
-        request_ID = (uuid.uuid4().hex)[:12]
-        request_ID = str('sensor1_temp_' + request_ID)
-        request = [{'register':{'sensor':{'app_ID':self.app_ID,
-            'request_ID':request_ID, 'sensor_type':'temperature'}}}]
-        self.push_content(request_path, request)
-        self.requests.append(request_ID)
-        self.logger.info('sent request to register sensor1')
-        gevent.sleep(3)
 
         # register the actuator - 2
         request_ID = (uuid.uuid4().hex)[:12]

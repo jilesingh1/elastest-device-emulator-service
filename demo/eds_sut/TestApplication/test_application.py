@@ -72,6 +72,7 @@ class TestApplication(XAE):
         for sensor_count in range(1, self.num_of_sensors+1):
             request_ID = (uuid.uuid4().hex)[:12]
             sensor_name = str(sensor_base_name + str(sensor_count))
+            sensor_name = sensor_name + '_'
             request_ID = str(sensor_name  + request_ID)
             request = [{'register':{'sensor':{'app_ID':self.app_ID,
                 'request_ID':request_ID, 'sensor_type':'temperature'}}}]

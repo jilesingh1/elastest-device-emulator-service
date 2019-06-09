@@ -124,6 +124,16 @@ class TestApplication(XAE):
         request_path = self.sensor_temp_path + 'request'
         self.push_content(request_path, request)
 
+        # switch on the temperature sensor - 3.1
+        request_ID = (uuid.uuid4().hex)[:12]
+        request_ID = str('modify_' + request_ID)
+        sensor_name = self.requests_ID[self.requests[1]]['conf']['name']
+        self.requests.append(request_ID)
+        request = [{'modify':{'app_ID':self.app_ID, 'request_ID':
+            request_ID, 'name' : sensor_name, 'conf':{'onoff':'ON', 'period':5}}}]
+        request_path = self.sensor1_temp_path + 'request'
+        self.push_content(request_path, request)
+
         request_ID = (uuid.uuid4().hex)[:12]
         request_ID = str('modify_' + request_ID)
         actuator_name = self.requests_ID[self.requests[2]]['conf']['name']

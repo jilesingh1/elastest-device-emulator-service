@@ -53,12 +53,12 @@ class TestApplication(XAE):
         self.push_content(request_path, request)
 
     def send_requests(self):
+        # sensor base name
+        sensor_base_name = "sensor_temp_"
         # register the application - 0
         request_ID = (uuid.uuid4().hex)[:12]
         # append the request to requests
         request_ID = str('app_' + request_ID)
-        # sensor base name
-        sensor_name = "sensor_temp_"
 
         request = [{'register':{'application':{'app_ID':self.app_ID,
             'request_ID':request_ID}}}]
@@ -68,17 +68,17 @@ class TestApplication(XAE):
         self.logger.info('sent request to register application')
         gevent.sleep(3)
 
-        # register the sensors involed
+        # register the sensors involed - 1
         for sensor_count in range(1, self.num_of_sensors+1):
             request_ID = (uuid.uuid4().hex)[:12]
-            request_ID = str('sensor_temp_' + sensor_count + request_ID)
+            sensor_name = str(sensor_base_name + sensor_count)
+            request_ID = str(sensor_name  + request_ID)
             request = [{'register':{'sensor':{'app_ID':self.app_ID,
                 'request_ID':request_ID, 'sensor_type':'temperature'}}}]
             self.push_content(request_path, request)
             self.requests.append(request_ID)
             self.logger.info('sent request to register sensor')
             gevent.sleep(3)
-
 
         # register the actuator - 2
         request_ID = (uuid.uuid4().hex)[:12]
@@ -91,28 +91,19 @@ class TestApplication(XAE):
         gevent.sleep(3)
 
         # switch on the temperature sensor - 3
-        request_ID = (uuid.uuid4().hex)[:12]
-        request_ID = str('modify_' + request_ID)
-        sensor_name = self.requests_ID[self.requests[1]]['conf']['name']
-        self.requests.append(request_ID)
-        request = [{'modify':{'app_ID':self.app_ID, 'request_ID':
-            request_ID, 'name' : sensor_name, 'conf':{'onoff':'ON', 'period':5}}}]
-        request_path = self.sensor_temp_path + 'request'
-        self.push_content(request_path, request)
-
-        # switch on the temperature sensor - 3.1
-        request_ID = (uuid.uuid4().hex)[:12]
-        request_ID = str('modify_' + request_ID)
-        sensor_name = self.requests_ID[self.requests[2]]['conf']['name']
-        self.requests.append(request_ID)
-        request = [{'modify':{'app_ID':self.app_ID, 'request_ID':
-            request_ID, 'name' : sensor_name, 'conf':{'onoff':'ON', 'period':5}}}]
-        request_path = self.sensor_temp_path + 'request'
-        self.push_content(request_path, request)
+        for sensor_count in range(1, self.num_of_sensors+1):
+            request_ID = (uuid.uuid4().hex)[:12]
+            request_ID = str('modify_' + request_ID)
+            sensor_name = self.requests_ID[self.requests[sensor_count]]['conf']['name']
+            self.requests.append(request_ID)
+            request = [{'modify':{'app_ID':self.app_ID, 'request_ID':
+                request_ID, 'name' : sensor_name, 'conf':{'onoff':'ON', 'period':5}}}]
+            request_path = self.sensor_temp_path + 'request'
+            self.push_content(request_path, request)
 
         request_ID = (uuid.uuid4().hex)[:12]
         request_ID = str('modify_' + request_ID)
-        actuator_name = self.requests_ID[self.requests[3]]['conf']['name']
+        actuator_name = self.requests_ID[self.requests[num_of_sensors+1]]['conf']['name']
         self.requests.append(request_ID)
         request = [{'modify':{'app_ID':self.app_ID, 'request_ID':
             request_ID, 'name' : actuator_name, 'conf':{'delay':3}}}]
@@ -123,15 +114,13 @@ class TestApplication(XAE):
         # if established we will connect the sensor application
         self.logger.info('waiting for system to be established...')
         gevent.sleep(5)
-        sensor_request = self.requests[1]
-        self.add_container_subscription(self.requests_ID[sensor_request]['conf']['path'],
-                self.handle_temperature_sensor)
 
-        sensor_request = self.requests[2]
-        self.add_container_subscription(self.requests_ID[sensor_request]['conf']['path'],
-                self.handle_temperature_sensor)
+        for sensor_count in range(1, self.num_of_sensors+1): 
+            sensor_request = self.requests[sensor_count]
+            self.add_container_subscription(self.requests_ID[sensor_request]['conf']['path'],
+                    self.handle_temperature_sensor)
 
-        actuator_request = self.requests[3]
+        actuator_request = self.requests[self.num_of_sensors+1]
         self.add_container_subscription(self.requests_ID[actuator_request]['conf']['out_path'],
                self.handle_actuator_out)
 
@@ -148,7 +137,7 @@ class TestApplication(XAE):
 
     def handle_temperature_sensor(self, cnt, con):
         # actual logic is placed here
-        actuator_request = self.requests[3]
+        actuator_request = self.requests[self.num_of_sensors+1]
         self.logger.info(':sensor:'+ con)
         self.logger.info(cnt)
         self.logger.info(str(con))

@@ -8,7 +8,7 @@ import signal
 class TestApplication(XAE):
 
     def __init__(self, *args, **kw):
-        print(args)
+        print("TEST Application ”)
         super(TestApplication, self).__init__(*args, **kw)
 
         self.orch_path = 'onem2m/EDSOrch/edsorch/'

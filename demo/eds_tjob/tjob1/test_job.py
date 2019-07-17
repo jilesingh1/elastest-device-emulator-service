@@ -85,6 +85,7 @@ class TestJob(XAE):
 
         client = OneM2MHTTPClient(eds_base, False)
 
+
         base_path = "onem2m/EDSOrch/testapplication/"
         sensors_path = base_path + "sensors/"
         onem2m_request = OneM2MRequest("retrieve", to=sensors_path, rcn=5)
@@ -99,6 +100,9 @@ class TestJob(XAE):
         sensor_data = sensors_path + sensor_path + "/data"
         
         actuators_path = base_path + "actuators/"
+        
+        send_request = OneM2MRequest("create", to = actuators_path, name1="test")
+        send_request.send_onem2m_request()
         onem2m_request = OneM2MRequest("retrieve", to=actuators_path, rcn=5)
 
         promise = client.send_onem2m_request(onem2m_request)

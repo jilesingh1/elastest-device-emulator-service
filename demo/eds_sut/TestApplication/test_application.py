@@ -8,7 +8,6 @@ import signal
 class TestApplication(XAE):
 
     def __init__(self, *args, **kw):
-        print("TEST Application ”)
         super(TestApplication, self).__init__(*args, **kw)
 
         self.orch_path = 'onem2m/EDSOrch/edsorch/'
@@ -54,6 +53,7 @@ class TestApplication(XAE):
         self.push_content(request_path, request)
 
     def send_requests(self):
+        print("TEST Application ”)
         # sensor base name
         sensor_base_name = "sensor_temp_"
         # register the application - 0

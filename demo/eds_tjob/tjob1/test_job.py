@@ -88,6 +88,9 @@ class TestJob(XAE):
 
         base_path = "onem2m/EDSOrch/testapplication/"
         sensors_path = base_path + "sensors/"
+        send_request = OneM2MRequest("create", to = sensors_path, name1="test")
+        client.send_onem2m_request(send_request)
+        
         onem2m_request = OneM2MRequest("retrieve", to=sensors_path, rcn=5)
 
         promise = client.send_onem2m_request(onem2m_request)
@@ -101,8 +104,6 @@ class TestJob(XAE):
         
         actuators_path = base_path + "actuators/"
         
-        send_request = OneM2MRequest("create", to = actuators_path, name1="test")
-        send_request.send_onem2m_request()
         onem2m_request = OneM2MRequest("retrieve", to=actuators_path, rcn=5)
 
         promise = client.send_onem2m_request(onem2m_request)

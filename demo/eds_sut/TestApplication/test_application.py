@@ -10,8 +10,8 @@ class TestApplication(XAE):
     def __init__(self, *args, **kw):
         super(TestApplication, self).__init__(*args, **kw)
 
-        self.logger.log(args)
-        self.logger.log(kw)
+        self.logger.info(args)
+        self.logger.info(kw)
         self.orch_path = 'onem2m/EDSOrch/edsorch/'
         self.sensor_temp_path = 'onem2m/TemperatureSensor/'
 
@@ -27,7 +27,7 @@ class TestApplication(XAE):
 
     def _on_register(self):
         
-        self.logger.log(self)
+        self.logger.info(self)
         # subscribe to the EDS orch response
         response_path = self.orch_path + 'response'
         self.add_container_subscription(response_path, self.handle_orch_response)

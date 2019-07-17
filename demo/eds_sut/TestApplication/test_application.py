@@ -53,7 +53,7 @@ class TestApplication(XAE):
         self.push_content(request_path, request)
 
     def send_requests(self):
-        print("TEST Application ”)
+        print("TEST Application ")
         # sensor base name
         sensor_base_name = "sensor_temp_"
         # register the application - 0

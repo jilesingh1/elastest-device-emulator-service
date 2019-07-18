@@ -25,7 +25,7 @@ class TestSensorBehaviour(unittest.TestCase):
     def test_sensor_trigger_time(self):
         sensor_trigger_time = time.time()
         trigger_time = sensor_trigger_time - variables.sensor_trigger_time
-        time_behaviour = trigger_time <= 1
+        time_behaviour = trigger_time <= 2.9
         self.assertTrue(time_behaviour, "Sensor trigger beyond expected interval")
 
     def test_sensor_data(self):

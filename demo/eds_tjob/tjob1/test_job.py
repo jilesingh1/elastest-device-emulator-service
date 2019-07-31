@@ -41,6 +41,8 @@ class TestActuatorTrigger(unittest.TestCase):
 class TestActuatorDataBehaviour(unittest.TestCase):
 
     def test_actuator_data(self):
+        print variables.sensor_data + "\n"
+        print variables.actuator_data + "\n"
         self.assertEqual(variables.sensor_data, variables.actuator_data,
                         "Received actuator data not equal to sensor data")
 

@@ -128,6 +128,10 @@ class TestJob(XAE):
         if not variables.start:
             xmlrunner.XMLTestRunner(verbosity=2, output='/tmp/test-reports').run(actuatorTriggerSuite)
 
+        if not variables.start:
+            xmlrunner.XMLTestRunner(verbosity=2, output='/tmp/test-reports').run(actuatorDataBehaviourSuite)
+
+
         if variables.sensor_data >= variables.threshold:
             variables.actuator_trigger = True
         else:
